@@ -4,7 +4,7 @@ function SerieComponent(props) {
 
     const navigate = useNavigate();
     const gotoUrl = (codigo) => {
-        navigate ("/series/edit"+codigo);
+        navigate("/series/edit/" + codigo);
     }
 
     return (

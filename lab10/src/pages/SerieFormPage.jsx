@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import HeaderComponent from "../components/HeaderComponent.jsx"
+
 
 function SerieFormPage(){
     const series = [
@@ -11,57 +12,44 @@ function SerieFormPage(){
         {cod:5, nom:"Dr. House", cat:"Drama", img:"dr-house.png"},
         {cod:6, nom:"The X-Files", cat:"Drama", img:"the-x-files.png"},
     ];
-
     const { idserie } = useParams();
-
-    const [nombre, setNombre] = useState("");
-    const [categoria, setCategoria] = useState("");
-    const [imagen, setImagen] = useState("https://dummyimage.com/400x250/000/fff");
-
-    useEffect(() => {
-        const item = series.find(s => s.cod == idserie);
-        if(item){
-            setNombre(item.nom);
-            setCategoria(item.cat);
-            setImagen("https://dummyimage.com/400x250/000/fff&text=" + encodeURIComponent(item.img));
+    const setDataForm = (codigo) => {
+        for (const item of series){
+            if (item.cod == codigo){
+                console.log(item);
+                document.getElementById("inputName").value = item.nom;
+                document.getElementById("inputCategory").value = item.cat;
+                document.getElementById("fileImg").src = "https://dummyimage.com/400x250/000/fff&text"+item.img;
+                break;
+            }
         }
+    }
+    useEffect(() => {
+    setDataForm(idserie);
     }, [idserie]);
-
     return (
         <>
             <HeaderComponent />
             <div className="container mt-3">
                 <div className="border-bottom pb-3 mb-3">
-                    <h3>{idserie ? "Editar" : "Nuevo"} - Serie</h3>
+                    <h3>Nuevo - Serie</h3>
                 </div>
                 <form className="row">
                     <div className="col-md-4">
                         <img 
+                            id="fileImg"
                             className="card-img-top" 
-                            src={imagen} 
+                            src={"https://dummyimage.com/400x250/000/fff"} 
                             alt="img" />
                     </div>
                     <div className="col-md-8">
                         <div className="mb-3">
                             <label htmlFor="inputName" className="form-label">Nombre</label>
-                            <input
-                                type="text"
-                                className="form-control"
-                                id="inputName"
-                                required
-                                value={nombre}
-                                onChange={e => setNombre(e.target.value)}
-                            />
+                            <input type="text" className="form-control" id="inputName" required />
                         </div>
                         <div className="mb-3">
                             <label htmlFor="inputCategory" className="form-label">Categoria</label>
-                            <select
-                                className="form-select"
-                                id="inputCategory"
-                                required
-                                value={categoria}
-                                onChange={e => setCategoria(e.target.value)}
-                            >
+                            <select className="form-select" id="inputCategory" required >
                                 <option value="">Seleccione una opción</option>
                                 <option value="Horror">Horror</option>
                                 <option value="Comedy">Comedy</option>
@@ -83,4 +71,5 @@ function SerieFormPage(){
     )
 }
 
-export default SerieFormPage;
+
+export default SerieFormPage
